@@ -14,7 +14,7 @@
     <header class="site-header" aria-label="Primary navigation">
       <a class="brand" href="#top">Roken</a>
       <nav>
-        <a href="#overview">Overview</a>
+        <a href="#abstract">Abstract</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
         <a href="#gallery">Gallery</a>
@@ -22,234 +22,217 @@
       </nav>
     </header>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-media" aria-hidden="true"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="eyebrow">Coordinated multi-robot trajectory generation</p>
-          <h1 id="hero-title">Roken</h1>
-          <p class="subtitle">
-            Robots as Tokens: Unified Diffusion Transformer for Coordinated
-            Multi-Robot Trajectory Generation
-          </p>
-          <p class="hero-copy">
-            A robot-token diffusion transformer that generates safe,
-            communication-aware team trajectories in a feed-forward denoising
-            rollout.
-          </p>
-          <div class="hero-actions" aria-label="Project links">
-            <a class="button primary" href="assets/roken-paper.pdf">Paper PDF</a>
-            <a class="button" href="#bibtex">BibTeX</a>
-            <a class="button disabled" aria-disabled="true">Code coming soon</a>
-          </div>
-          <div class="author-placeholder">
-            Authors, affiliations, and project links to be added before public
-            release.
-          </div>
+    <main id="top" class="page">
+      <section class="paper-header" aria-labelledby="paper-title">
+        <p class="venue-note">Project page preview</p>
+        <h1 id="paper-title">
+          Robots as Tokens: Unified Diffusion Transformer for Coordinated
+          Multi-Robot Trajectory Generation
+        </h1>
+        <p class="project-name">Roken</p>
+        <p class="author-placeholder">
+          Authors, affiliations, and project links to be added before public
+          release.
+        </p>
+        <div class="link-row" aria-label="Project links">
+          <a class="button primary" href="assets/roken-paper.pdf">Paper PDF</a>
+          <a class="button" href="#bibtex">BibTeX</a>
+          <span class="button disabled" aria-disabled="true">Code coming soon</span>
         </div>
       </section>
 
-      <section id="overview" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Overview</p>
-          <h2>One model for flexible robot teams</h2>
-        </div>
-        <div class="intro-grid">
-          <article>
-            <h3>Robot tokens</h3>
-            <p>
-              Roken represents each robot as a token, letting team members
-              coordinate through self-attention while preserving a simple path
-              to variable team sizes.
-            </p>
-          </article>
-          <article>
-            <h3>Map-conditioned generation</h3>
-            <p>
-              Robot tokens cross-attend to map tokens, allowing generated
-              trajectories to account for cluttered layouts and local occupancy.
-            </p>
-          </article>
-          <article>
-            <h3>Feed-forward coordination</h3>
-            <p>
-              The planner directly generates multi-robot trajectories without
-              sequential individual planning or iterative conflict repair.
-            </p>
-          </article>
-          <article>
-            <h3>Safety and connectivity</h3>
-            <p>
-              Experiments evaluate full success under reachability, obstacle
-              avoidance, inter-robot collision avoidance, and communication
-              connectivity constraints.
-            </p>
-          </article>
-        </div>
+      <figure class="teaser-figure">
+        <img
+          src="assets/fig-demo4.png"
+          alt="Roken planning modes and deployment scenes"
+        />
+        <figcaption>
+          Roken supports single-robot planning, coordinated multi-robot
+          planning, and conditional planning with fixed robot tokens using one
+          robot-token diffusion model.
+        </figcaption>
+      </figure>
+
+      <section id="abstract" class="paper-section">
+        <h2>Abstract</h2>
+        <p>
+          Multi-robot navigation requires teams to reach goals while maintaining
+          safety and communication connectivity in cluttered environments. Roken
+          studies whether coordinated multi-robot trajectories can be learned as
+          a conditional generative distribution and produced in a feed-forward
+          denoising rollout. The model represents each robot as a token, lets
+          robot tokens interact through self-attention, and cross-attends to map
+          tokens for spatial awareness.
+        </p>
+        <p>
+          With auxiliary supervision for local occupancy reconstruction and
+          long-horizon waypoint prediction, Roken learns coordinated trajectory
+          generation across different team sizes. Experiments show strong
+          performance on connectivity-constrained goal navigation, scalability
+          across varying robot counts, and real-world deployment with physical
+          robots.
+        </p>
       </section>
 
-      <section id="method" class="section band">
-        <div class="section-heading">
-          <p class="eyebrow">Method</p>
-          <h2>Diffusion planning with robot and map tokens</h2>
-        </div>
-        <div class="media-grid two-column">
-          <figure class="feature-figure">
-            <img
-              src="assets/fig-framework-roken.png"
-              alt="Roken network architecture with robot tokens, map tokens, and trajectory outputs"
-              loading="lazy"
-            />
-            <figcaption>
-              Roken uses a diffusion transformer where robot tokens interact
-              with each other and query map tokens for spatial awareness.
-            </figcaption>
-          </figure>
-          <div class="method-copy">
-            <h3>Multi-scale supervision</h3>
-            <p>
-              Beyond denoising future trajectories, Roken uses auxiliary
-              objectives for local occupancy reconstruction and long-horizon
-              waypoint prediction. These signals strengthen condition injection
-              and help the model learn collision-aware, goal-directed motion.
-            </p>
-            <h3>Mixed team training</h3>
-            <p>
-              Training absorbs expert demonstrations from different team sizes.
-              At inference time, the same architecture can support single-robot
-              planning, coordinated multi-robot planning, and conditional
-              generation with fixed robot tokens.
-            </p>
-          </div>
-        </div>
-        <figure class="wide-figure">
+      <section id="method" class="paper-section">
+        <h2>Method Overview</h2>
+        <p>
+          Roken is an end-to-end diffusion transformer for multi-robot
+          trajectory generation. Each robot token contains the robot state,
+          noisy future trajectory, goal condition, and generation mask. Robot
+          tokens communicate through transformer self-attention, while map
+          tokens provide occupancy context through cross-attention.
+        </p>
+        <figure class="paper-figure">
+          <img
+            src="assets/fig-framework-roken.png"
+            alt="Roken network architecture with robot tokens, map tokens, and trajectory outputs"
+            loading="lazy"
+          />
+          <figcaption>
+            Roken treats the robot team as a set of interacting tokens and
+            decodes clean coordinated trajectories after denoising.
+          </figcaption>
+        </figure>
+        <p>
+          The training objective combines trajectory denoising with auxiliary
+          tasks for local occupancy reconstruction and waypoint prediction.
+          These signals make map conditioning more effective and encourage
+          collision-aware, goal-directed team behavior.
+        </p>
+        <figure class="paper-figure narrow-figure">
           <img
             src="assets/fig-dataset2.png"
             alt="Training dataset distribution across robot team sizes"
             loading="lazy"
           />
           <figcaption>
-            Training data covers multiple team sizes, with a distribution
-            centered around the four-robot case.
+            The training data contains trajectories from multiple team sizes,
+            enabling the same model design to support flexible robot counts.
           </figcaption>
         </figure>
       </section>
 
-      <section id="results" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Results</p>
-          <h2>Coordinated trajectories in simulation and real-world scenes</h2>
-        </div>
-        <div class="metrics" aria-label="Headline results">
-          <div class="metric">
-            <span class="value">0.790</span>
-            <span class="label">Full success, Roken RL</span>
-          </div>
-          <div class="metric">
-            <span class="value">0.920</span>
-            <span class="label">Connectivity, Roken RL</span>
-          </div>
-          <div class="metric">
-            <span class="value">0.947</span>
-            <span class="label">Reach ratio, Roken RL</span>
-          </div>
-          <div class="metric">
-            <span class="value">1-10</span>
-            <span class="label">Evaluated team sizes</span>
-          </div>
-        </div>
-        <figure class="wide-figure">
+      <section id="results" class="paper-section">
+        <h2>Main Results</h2>
+        <p>
+          Roken is evaluated on unseen cluttered environments under a strict
+          full-success metric that requires goal reaching, obstacle avoidance,
+          inter-robot collision avoidance, and communication connectivity.
+        </p>
+        <ul class="result-list">
+          <li>
+            Roken RL reaches a full success ratio of <strong>0.790</strong>,
+            with <strong>0.920</strong> connectivity and
+            <strong>0.947</strong> reach ratio.
+          </li>
+          <li>
+            Mixed-team training improves scalability across team sizes, with
+            evaluation spanning <strong>1 to 10 robots</strong>.
+          </li>
+          <li>
+            The same model can be used for single-robot planning, coordinated
+            team planning, and conditional generation with fixed robot tokens.
+          </li>
+        </ul>
+        <figure class="paper-figure">
           <img
-            src="assets/fig-demo4.png"
-            alt="Roken planning modes and deployment scenes"
+            src="assets/fig-scalability.png"
+            alt="Scalability evaluation across robot team sizes"
             loading="lazy"
           />
           <figcaption>
-            Roken supports single-robot planning, coordinated team planning,
-            and conditional planning with fixed robot tokens.
+            Scalability evaluation across robot team sizes for different Roken
+            variants.
           </figcaption>
         </figure>
-        <div class="media-grid two-column">
-          <figure class="feature-figure">
-            <img
-              src="assets/fig-scalability.png"
-              alt="Scalability evaluation across robot team sizes"
-              loading="lazy"
-            />
-            <figcaption>
-              Mixed-team training improves scalability across varying team
-              sizes.
-            </figcaption>
-          </figure>
-          <figure class="feature-figure">
-            <img
-              src="assets/fig-realworld2.png"
-              alt="Real-world robot deployment and maze navigation examples"
-              loading="lazy"
-            />
-            <figcaption>
-              Real-world deployment demonstrates coordinated navigation with
-              physical robots.
-            </figcaption>
-          </figure>
-        </div>
+        <figure class="paper-figure">
+          <img
+            src="assets/fig-realworld2.png"
+            alt="Real-world robot deployment and maze navigation examples"
+            loading="lazy"
+          />
+          <figcaption>
+            Real-world deployment demonstrates that generated coordinated
+            trajectories can transfer to physical multi-robot navigation.
+          </figcaption>
+        </figure>
       </section>
 
-      <section id="gallery" class="section band">
-        <div class="section-heading">
-          <p class="eyebrow">Gallery</p>
-          <h2>More qualitative results</h2>
-        </div>
-        <div class="gallery-grid">
-          <figure>
+      <section id="gallery" class="paper-section">
+        <h2>Qualitative Results</h2>
+        <p>
+          Additional examples show Roken's rollout behavior, deployment setup,
+          occupancy reconstruction ability, and representative failure cases.
+        </p>
+        <div class="figure-stack">
+          <figure class="paper-figure">
             <img
               src="assets/fig-wheeltec.png"
               alt="WheelTec robot deployment results"
               loading="lazy"
             />
-            <figcaption>Real-world deployment</figcaption>
+            <figcaption>
+              Real-world WheelTec deployment with one to four robots.
+            </figcaption>
           </figure>
-          <figure>
+          <figure class="paper-figure">
             <img
               src="assets/fig-more-results.png"
               alt="Additional rollout episodes for different team sizes"
               loading="lazy"
             />
-            <figcaption>Rollout episodes</figcaption>
+            <figcaption>
+              Additional rollout episodes with different team sizes.
+            </figcaption>
           </figure>
-          <figure>
+          <figure class="paper-figure">
             <img
               src="assets/fig-occ-prediction1.png"
               alt="Local occupancy reconstruction example one"
               loading="lazy"
             />
-            <figcaption>Occupancy reconstruction</figcaption>
+            <figcaption>
+              Local occupancy reconstruction from robot-token features.
+            </figcaption>
           </figure>
-          <figure>
+          <figure class="paper-figure">
             <img
               src="assets/fig-occ-prediction2.png"
               alt="Local occupancy reconstruction example two"
               loading="lazy"
             />
-            <figcaption>Occupancy reconstruction</figcaption>
-          </figure>
-          <figure>
-            <img
-              src="assets/fig-failure-case.png"
-              alt="Failure cases in local minima environments"
-              loading="lazy"
-            />
-            <figcaption>Failure cases</figcaption>
+            <figcaption>
+              Additional occupancy reconstruction examples at different local
+              scales.
+            </figcaption>
           </figure>
         </div>
       </section>
 
-      <section id="bibtex" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Citation</p>
-          <h2>BibTeX</h2>
-        </div>
+      <section id="limitations" class="paper-section">
+        <h2>Limitations</h2>
+        <p>
+          Roken can fail in local-minimum scenarios that are underrepresented in
+          the training data. Future improvements may include dataset enhancement,
+          reinforcement learning post-training, and online safety shielding for
+          real-world deployments.
+        </p>
+        <figure class="paper-figure">
+          <img
+            src="assets/fig-failure-case.png"
+            alt="Failure cases in local minima environments"
+            loading="lazy"
+          />
+          <figcaption>
+            Representative failure cases where the generated trajectories do
+            not escape local minima.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="bibtex" class="paper-section">
+        <h2>BibTeX</h2>
         <div class="bibtex-toolbar">
           <button class="copy-button" type="button" data-copy-target="bibtex-code">
             Copy BibTeX
