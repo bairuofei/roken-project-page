@@ -425,8 +425,25 @@ pre {
 }
 
 @media (max-width: 680px) {
+  .site-header {
+    align-items: center;
+    flex-direction: row;
+    gap: 16px;
+    min-height: 64px;
+    padding: 0 16px;
+  }
+
+  nav {
+    flex: 1;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 16px 0;
+    white-space: nowrap;
+  }
+
   .hero {
-    min-height: 82vh;
+    min-height: 76vh;
   }
 
   .hero-content,
