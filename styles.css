@@ -108,7 +108,7 @@ h1 {
   max-width: 920px;
   margin: 0 auto;
   font-family: var(--font-heading);
-  font-size: clamp(1.75rem, 3.6vw, 2.95rem);
+  font-size: clamp(1.65rem, 3vw, 2.45rem);
   font-weight: 540;
   line-height: 1.1;
   letter-spacing: 0;
