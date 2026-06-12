@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Roken | Robots as Tokens</title>
+    <meta
+      name="description"
+      content="Roken is a unified diffusion transformer for coordinated multi-robot trajectory generation."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <a class="brand" href="#top">Roken</a>
+      <nav>
+        <a href="#overview">Overview</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#bibtex">BibTeX</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Coordinated multi-robot trajectory generation</p>
+          <h1 id="hero-title">Roken</h1>
+          <p class="subtitle">
+            Robots as Tokens: Unified Diffusion Transformer for Coordinated
+            Multi-Robot Trajectory Generation
+          </p>
+          <p class="hero-copy">
+            A robot-token diffusion transformer that generates safe,
+            communication-aware team trajectories in a feed-forward denoising
+            rollout.
+          </p>
+          <div class="hero-actions" aria-label="Project links">
+            <a class="button primary" href="assets/roken-paper.pdf">Paper PDF</a>
+            <a class="button" href="#bibtex">BibTeX</a>
+            <a class="button disabled" aria-disabled="true">Code coming soon</a>
+          </div>
+          <div class="author-placeholder">
+            Authors, affiliations, and project links to be added before public
+            release.
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Overview</p>
+          <h2>One model for flexible robot teams</h2>
+        </div>
+        <div class="intro-grid">
+          <article>
+            <h3>Robot tokens</h3>
+            <p>
+              Roken represents each robot as a token, letting team members
+              coordinate through self-attention while preserving a simple path
+              to variable team sizes.
+            </p>
+          </article>
+          <article>
+            <h3>Map-conditioned generation</h3>
+            <p>
+              Robot tokens cross-attend to map tokens, allowing generated
+              trajectories to account for cluttered layouts and local occupancy.
+            </p>
+          </article>
+          <article>
+            <h3>Feed-forward coordination</h3>
+            <p>
+              The planner directly generates multi-robot trajectories without
+              sequential individual planning or iterative conflict repair.
+            </p>
+          </article>
+          <article>
+            <h3>Safety and connectivity</h3>
+            <p>
+              Experiments evaluate full success under reachability, obstacle
+              avoidance, inter-robot collision avoidance, and communication
+              connectivity constraints.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="method" class="section band">
+        <div class="section-heading">
+          <p class="eyebrow">Method</p>
+          <h2>Diffusion planning with robot and map tokens</h2>
+        </div>
+        <div class="media-grid two-column">
+          <figure class="feature-figure">
+            <img
+              src="assets/fig-framework-roken.png"
+              alt="Roken network architecture with robot tokens, map tokens, and trajectory outputs"
+              loading="lazy"
+            />
+            <figcaption>
+              Roken uses a diffusion transformer where robot tokens interact
+              with each other and query map tokens for spatial awareness.
+            </figcaption>
+          </figure>
+          <div class="method-copy">
+            <h3>Multi-scale supervision</h3>
+            <p>
+              Beyond denoising future trajectories, Roken uses auxiliary
+              objectives for local occupancy reconstruction and long-horizon
+              waypoint prediction. These signals strengthen condition injection
+              and help the model learn collision-aware, goal-directed motion.
+            </p>
+            <h3>Mixed team training</h3>
+            <p>
+              Training absorbs expert demonstrations from different team sizes.
+              At inference time, the same architecture can support single-robot
+              planning, coordinated multi-robot planning, and conditional
+              generation with fixed robot tokens.
+            </p>
+          </div>
+        </div>
+        <figure class="wide-figure">
+          <img
+            src="assets/fig-dataset2.png"
+            alt="Training dataset distribution across robot team sizes"
+            loading="lazy"
+          />
+          <figcaption>
+            Training data covers multiple team sizes, with a distribution
+            centered around the four-robot case.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="results" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Results</p>
+          <h2>Coordinated trajectories in simulation and real-world scenes</h2>
+        </div>
+        <div class="metrics" aria-label="Headline results">
+          <div class="metric">
+            <span class="value">0.790</span>
+            <span class="label">Full success, Roken RL</span>
+          </div>
+          <div class="metric">
+            <span class="value">0.920</span>
+            <span class="label">Connectivity, Roken RL</span>
+          </div>
+          <div class="metric">
+            <span class="value">0.947</span>
+            <span class="label">Reach ratio, Roken RL</span>
+          </div>
+          <div class="metric">
+            <span class="value">1-10</span>
+            <span class="label">Evaluated team sizes</span>
+          </div>
+        </div>
+        <figure class="wide-figure">
+          <img
+            src="assets/fig-demo4.png"
+            alt="Roken planning modes and deployment scenes"
+            loading="lazy"
+          />
+          <figcaption>
+            Roken supports single-robot planning, coordinated team planning,
+            and conditional planning with fixed robot tokens.
+          </figcaption>
+        </figure>
+        <div class="media-grid two-column">
+          <figure class="feature-figure">
+            <img
+              src="assets/fig-scalability.png"
+              alt="Scalability evaluation across robot team sizes"
+              loading="lazy"
+            />
+            <figcaption>
+              Mixed-team training improves scalability across varying team
+              sizes.
+            </figcaption>
+          </figure>
+          <figure class="feature-figure">
+            <img
+              src="assets/fig-realworld2.png"
+              alt="Real-world robot deployment and maze navigation examples"
+              loading="lazy"
+            />
+            <figcaption>
+              Real-world deployment demonstrates coordinated navigation with
+              physical robots.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="gallery" class="section band">
+        <div class="section-heading">
+          <p class="eyebrow">Gallery</p>
+          <h2>More qualitative results</h2>
+        </div>
+        <div class="gallery-grid">
+          <figure>
+            <img
+              src="assets/fig-wheeltec.png"
+              alt="WheelTec robot deployment results"
+              loading="lazy"
+            />
+            <figcaption>Real-world deployment</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/fig-more-results.png"
+              alt="Additional rollout episodes for different team sizes"
+              loading="lazy"
+            />
+            <figcaption>Rollout episodes</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/fig-occ-prediction1.png"
+              alt="Local occupancy reconstruction example one"
+              loading="lazy"
+            />
+            <figcaption>Occupancy reconstruction</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/fig-occ-prediction2.png"
+              alt="Local occupancy reconstruction example two"
+              loading="lazy"
+            />
+            <figcaption>Occupancy reconstruction</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/fig-failure-case.png"
+              alt="Failure cases in local minima environments"
+              loading="lazy"
+            />
+            <figcaption>Failure cases</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="bibtex" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Citation</p>
+          <h2>BibTeX</h2>
+        </div>
+        <div class="bibtex-toolbar">
+          <button class="copy-button" type="button" data-copy-target="bibtex-code">
+            Copy BibTeX
+          </button>
+          <span class="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <pre><code id="bibtex-code">@article{roken2026,
+  title={Robots as Tokens: Unified Diffusion Transformer for Coordinated Multi-Robot Trajectory Generation},
+  author={Author list to be added},
+  journal={Project page preview},
+  year={2026}
+}</code></pre>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Roken project page preview.</span>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
