@@ -108,10 +108,14 @@ h1 {
   max-width: 920px;
   margin: 0 auto;
   font-family: var(--font-heading);
-  font-size: clamp(1.65rem, 3vw, 2.45rem);
+  font-size: clamp(1.55rem, 2.65vw, 2.15rem);
   font-weight: 540;
-  line-height: 1.1;
+  line-height: 1.12;
   letter-spacing: 0;
+}
+
+.title-line {
+  display: block;
 }
 
 .title-highlight {
@@ -327,6 +331,10 @@ code {
 
   .paper-header {
     padding: 48px 0 28px;
+  }
+
+  .title-line {
+    display: inline;
   }
 
   .paper-section {
