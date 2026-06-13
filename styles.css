@@ -1,11 +1,17 @@
 :root {
-  --ink: #1f2421;
-  --muted: #626a65;
-  --line: #dfe4df;
+  --ink: #211f20;
+  --muted: #6d6265;
+  --line: #e6d7da;
   --paper: #ffffff;
-  --soft: #f7f8f5;
-  --accent: #2f6f55;
-  --accent-dark: #1e4d3b;
+  --soft: #fbf8f8;
+  --accent: #8a1f2d;
+  --accent-dark: #641722;
+  --accent-soft: #fbf1f3;
+  --accent-line: #d7a9b1;
+  --body-copy: #342f31;
+  --disabled: #9a8e91;
+  --code-bg: #1c1517;
+  --code-ink: #fff4f6;
   --font-heading: Inter, "Source Sans 3", ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: Inter, "Source Sans 3", ui-sans-serif, system-ui, -apple-system,
@@ -119,7 +125,7 @@ h1 {
 }
 
 .title-highlight {
-  color: #8a1f2d;
+  color: var(--accent);
   font-weight: 650;
 }
 
@@ -135,7 +141,7 @@ h1 {
   max-width: 680px;
   margin: 20px auto 0;
   padding: 10px 14px;
-  border: 1px dashed #b8c4bd;
+  border: 1px dashed var(--accent-line);
   border-radius: 8px;
   color: var(--muted);
   background: var(--soft);
@@ -157,9 +163,9 @@ h1 {
   align-items: center;
   justify-content: center;
   padding: 0 17px;
-  border: 1px solid #bac8c0;
+  border: 1px solid var(--accent-line);
   border-radius: 999px;
-  background: #ffffff;
+  background: var(--paper);
   color: var(--accent-dark);
   font: inherit;
   font-weight: 750;
@@ -171,11 +177,11 @@ h1 {
 .copy-button {
   border-color: var(--accent);
   background: var(--accent);
-  color: #ffffff;
+  color: var(--paper);
 }
 
 .button.disabled {
-  color: #8b948f;
+  color: var(--disabled);
   cursor: default;
 }
 
@@ -240,10 +246,49 @@ figcaption {
   letter-spacing: 0;
 }
 
+.tldr-box {
+  margin: 0 0 34px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-soft);
+}
+
+.paper-section .tldr-label {
+  margin: 0 0 8px;
+  color: var(--accent-dark);
+  font-family: var(--font-heading);
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tldr-box p {
+  margin-bottom: 10px;
+}
+
+.challenge-list {
+  margin: 4px 0 0;
+  padding-left: 22px;
+  color: var(--body-copy);
+  font-size: 1.03rem;
+}
+
+.challenge-list li + li {
+  margin-top: 8px;
+}
+
 .paper-section p {
   margin: 0 0 16px;
-  color: #333b36;
+  color: var(--body-copy);
   font-size: 1.03rem;
+}
+
+.paper-section strong {
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 .paper-section p:last-child {
@@ -253,7 +298,7 @@ figcaption {
 .result-list {
   margin: 0 0 24px;
   padding-left: 22px;
-  color: #333b36;
+  color: var(--body-copy);
   font-size: 1.03rem;
 }
 
@@ -327,8 +372,8 @@ pre {
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #151b18;
-  color: #eef6f0;
+  background: var(--code-bg);
+  color: var(--code-ink);
   font-family: var(--font-mono);
   font-size: 0.92rem;
   line-height: 1.55;

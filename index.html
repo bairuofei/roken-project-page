@@ -14,7 +14,7 @@
     <header class="site-header" aria-label="Primary navigation">
       <a class="brand" href="#top">Roken</a>
       <nav>
-        <a href="#abstract">Abstract</a>
+        <a href="#motivation">Motivation</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
         <a href="#gallery">Gallery</a>
@@ -58,25 +58,49 @@
         </figcaption>
       </figure>
 
-      <section id="abstract" class="paper-section">
-        <h2>Abstract</h2>
+      <section id="motivation" class="paper-section">
+        <div class="tldr-box" aria-label="TL;DR summary">
+          <p class="tldr-label">TL;DR</p>
+          <p>
+            Roken treats each robot as a token and uses a single diffusion
+            transformer to generate coordinated multi-robot trajectories.
+          </p>
+          <p>
+            The same model supports different team sizes, preserves safety and
+            connectivity constraints, and transfers from simulation to physical
+            robot navigation.
+          </p>
+        </div>
+
+        <h2>Motivation</h2>
         <p>
-          Multi-robot navigation requires teams to reach goals while maintaining
-          safety and communication connectivity in cluttered environments. Roken
-          studies whether coordinated multi-robot trajectories can be learned as
-          a conditional generative distribution and produced in a feed-forward
-          denoising rollout. The model represents each robot as a token, lets
-          robot tokens interact through self-attention, and cross-attends to map
-          tokens for spatial awareness.
+          Multi-robot navigation requires a team to reach goals while avoiding
+          obstacles, preventing inter-robot collisions, and maintaining
+          communication connectivity. Classical planners often need carefully
+          designed coordination rules, while learned policies can struggle when
+          the number of robots or the environment layout changes.
         </p>
         <p>
-          With auxiliary supervision for local occupancy reconstruction and
-          long-horizon waypoint prediction, Roken learns coordinated trajectory
-          generation across different team sizes. Experiments show strong
-          performance on connectivity-constrained goal navigation, scalability
-          across varying robot counts, and real-world deployment with physical
-          robots.
+          Roken asks whether coordinated robot motion can be modeled as a
+          generative problem: given goals and a map, produce a set of compatible
+          future trajectories for the whole team in one denoising process.
         </p>
+
+        <h3>Challenges</h3>
+        <ul class="challenge-list">
+          <li>
+            <strong>Coordination:</strong> robots must move toward individual
+            goals without creating collisions or disconnected teams.
+          </li>
+          <li>
+            <strong>Scalability:</strong> one model should work across changing
+            team sizes instead of being retrained for every robot count.
+          </li>
+          <li>
+            <strong>Generalization:</strong> generated trajectories should
+            remain reliable in unseen cluttered maps and physical deployments.
+          </li>
+        </ul>
       </section>
 
       <section id="method" class="paper-section">
