@@ -80,7 +80,7 @@ const observeVideos = (videos) => {
   videos.forEach((video) => observer.observe(video));
 };
 
-const renderVideoRails = async () => {
+const renderVideoFigures = async () => {
   if (!videoMounts.length) return;
 
   try {
@@ -106,17 +106,11 @@ const renderVideoRails = async () => {
         return;
       }
 
-      const rail = document.createElement("div");
-      rail.className = "video-rail";
-      rail.setAttribute("aria-label", `${groupKey} videos`);
-
       videos.forEach((videoItem) => {
         const card = createVideoCard(videoItem);
-        rail.append(card);
+        mount.append(card);
         renderedVideos.push(card.querySelector("video"));
       });
-
-      mount.append(rail);
     });
 
     observeVideos(renderedVideos);
@@ -127,4 +121,4 @@ const renderVideoRails = async () => {
   }
 };
 
-renderVideoRails();
+renderVideoFigures();

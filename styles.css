@@ -270,22 +270,16 @@ figcaption {
 }
 
 .video-mount {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
   margin-top: 18px;
 }
 
-.video-rail {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 2px 2px 12px;
-  scroll-snap-type: x mandatory;
-  scrollbar-color: #b8c4bd transparent;
-}
-
 .video-card {
-  flex: 0 0 min(520px, 86vw);
+  flex: none;
+  width: 100%;
   margin: 0;
-  scroll-snap-align: start;
 }
 
 .video-card video {
