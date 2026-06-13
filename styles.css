@@ -269,6 +269,41 @@ figcaption {
   margin-top: 18px;
 }
 
+.video-mount {
+  margin-top: 18px;
+}
+
+.video-rail {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 2px 2px 12px;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: #b8c4bd transparent;
+}
+
+.video-card {
+  flex: 0 0 min(520px, 86vw);
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.video-card video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #101512;
+  object-fit: contain;
+}
+
+.video-card figcaption {
+  max-width: none;
+  margin: 8px 2px 0;
+  text-align: left;
+}
+
 .figure-stack {
   display: flex;
   flex-direction: column;

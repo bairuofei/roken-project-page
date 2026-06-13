@@ -1,0 +1,24 @@
+{
+  "manyRobots": [
+    {
+      "src": "assets/videos/many_robots/many-robots-01.mp4",
+      "caption": "Coordinated trajectory generation for multiple robots."
+    },
+    {
+      "src": "assets/videos/many_robots/many-robots-02.mp4",
+      "caption": "Multi-robot rollout with shared token-based generation."
+    }
+  ],
+  "variableTeams": [
+    {
+      "src": "assets/videos/variable_teams/variable-teams-01.mp4",
+      "caption": "Roken scales to variable team sizes under the same model."
+    }
+  ],
+  "newScenarios": [
+    {
+      "src": "assets/videos/unseen_scenarios/new-scenarios-01.mp4",
+      "caption": "Generated trajectories transfer to unseen navigation scenarios."
+    }
+  ]
+}
