@@ -125,43 +125,51 @@
           full-success metric that requires goal reaching, obstacle avoidance,
           inter-robot collision avoidance, and communication connectivity.
         </p>
-        <ul class="result-list">
-          <li>
-            Roken RL reaches a full success ratio of <strong>0.790</strong>,
-            with <strong>0.920</strong> connectivity and
-            <strong>0.947</strong> reach ratio.
-          </li>
-          <li>
+        <div class="result-subsection">
+          <h3>One Model, Many Robots</h3>
+          <p>
+            The same model supports single-robot planning, coordinated team
+            planning, and conditional generation with fixed robot tokens.
+          </p>
+        </div>
+        <div class="result-subsection">
+          <h3>One Model, Variable Teams</h3>
+          <p>
             Mixed-team training improves scalability across team sizes, with
             evaluation spanning <strong>1 to 10 robots</strong>.
-          </li>
-          <li>
-            The same model can be used for single-robot planning, coordinated
-            team planning, and conditional generation with fixed robot tokens.
-          </li>
-        </ul>
-        <figure class="paper-figure">
-          <img
-            src="assets/fig-scalability.png"
-            alt="Scalability evaluation across robot team sizes"
-            loading="lazy"
-          />
-          <figcaption>
-            Scalability evaluation across robot team sizes for different Roken
-            variants.
-          </figcaption>
-        </figure>
-        <figure class="paper-figure">
-          <img
-            src="assets/fig-realworld2.png"
-            alt="Real-world robot deployment and maze navigation examples"
-            loading="lazy"
-          />
-          <figcaption>
-            Real-world deployment demonstrates that generated coordinated
-            trajectories can transfer to physical multi-robot navigation.
-          </figcaption>
-        </figure>
+          </p>
+          <figure class="paper-figure">
+            <img
+              src="assets/fig-scalability.png"
+              alt="Scalability evaluation across robot team sizes"
+              loading="lazy"
+            />
+            <figcaption>
+              Scalability evaluation across robot team sizes for different
+              Roken variants.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="result-subsection">
+          <h3>One Model, New Scenarios</h3>
+          <p>
+            Roken RL reaches a full success ratio of <strong>0.790</strong>,
+            with <strong>0.920</strong> connectivity and
+            <strong>0.947</strong> reach ratio, and the generated trajectories
+            transfer to physical multi-robot navigation.
+          </p>
+          <figure class="paper-figure">
+            <img
+              src="assets/fig-realworld2.png"
+              alt="Real-world robot deployment and maze navigation examples"
+              loading="lazy"
+            />
+            <figcaption>
+              Real-world deployment demonstrates that generated coordinated
+              trajectories can transfer to physical multi-robot navigation.
+            </figcaption>
+          </figure>
+        </div>
       </section>
 
       <section id="gallery" class="paper-section">

@@ -231,6 +231,15 @@ figcaption {
   letter-spacing: 0;
 }
 
+.paper-section h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.18rem, 2vw, 1.38rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
 .paper-section p {
   margin: 0 0 16px;
   color: #333b36;
@@ -250,6 +259,14 @@ figcaption {
 
 .result-list li + li {
   margin-top: 8px;
+}
+
+.result-subsection {
+  margin-top: 28px;
+}
+
+.result-subsection .paper-figure {
+  margin-top: 18px;
 }
 
 .figure-stack {
