@@ -148,6 +148,7 @@ h1 {
 .author-line {
   margin: 0;
   color: var(--ink);
+  font-size: 1.08rem;
   font-weight: 650;
 }
 
@@ -205,6 +206,12 @@ h1 {
   cursor: default;
 }
 
+.button.primary.disabled {
+  border-color: var(--accent-line);
+  background: var(--soft);
+  color: var(--muted);
+}
+
 .teaser-figure,
 .paper-figure {
   margin: 0;
@@ -226,12 +233,6 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--soft);
-}
-
-.narrow-figure {
-  width: min(680px, 100%);
-  margin-left: auto;
-  margin-right: auto;
 }
 
 figcaption {
