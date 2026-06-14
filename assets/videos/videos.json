@@ -2,23 +2,29 @@
   "manyRobots": [
     {
       "src": "assets/videos/many_robots/many-robots-01.mp4",
-      "caption": "Coordinated trajectory generation for multiple robots."
-    },
+      "caption": "Roken generates four-robot trajectories with four input robot tokens."
+    }
+  ],
+  "methodOverview": [
     {
-      "src": "assets/videos/many_robots/many-robots-02.mp4",
-      "caption": "Multi-robot rollout with shared token-based generation."
+      "src": "assets/videos/real_world/6月13日_渐隐尾痕_no_audio.mp4",
+      "caption": "Real-world deployment of one Roken model with 1, 2, 3, and 4 robots in unseen environments. The trajectories are generated in a feed-forward manner without any online optimization or iterative refinement."
     }
   ],
   "variableTeams": [
     {
       "src": "assets/videos/variable_teams/variable-teams-01.mp4",
-      "caption": "Roken scales to variable team sizes under the same model."
+      "caption": "One Roken model scales to 2, 6, or 10 robots by changing the number of input robot tokens."
     }
   ],
   "newScenarios": [
     {
       "src": "assets/videos/unseen_scenarios/new-scenarios-01.mp4",
-      "caption": "Generated trajectories transfer to unseen navigation scenarios."
+      "caption": "Roken generates multi-robot trajectories with partially observed maps."
+    },
+    {
+      "src": "assets/videos/many_robots/many-robots-02.mp4",
+      "caption": "Roken generates multi-robot trajectories in our manually designed out-of-distribution maps."
     }
   ]
 }

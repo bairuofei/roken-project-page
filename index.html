@@ -17,14 +17,13 @@
         <a href="#motivation">Motivation</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
-        <a href="#gallery">Gallery</a>
+        <a href="#gallery">Ablations</a>
         <a href="#bibtex">BibTeX</a>
       </nav>
     </header>
 
     <main id="top" class="page">
       <section class="paper-header" aria-labelledby="paper-title">
-        <p class="venue-note">Project page preview</p>
         <h1 id="paper-title">
           <span class="title-line"
             ><span class="title-highlight">Robots as Tokens</span>: Unified
@@ -36,9 +35,9 @@
         </h1>
         <div class="author-block" aria-label="Authors and affiliations">
           <p class="author-line">
-            Ruofei Bai<sup>1,2</sup>, Jie Chen<sup>3</sup>, Yixin
+            Ruofei Bai<sup>1,2</sup>, Jie Chen<sup>3</sup>, Yuxin
             Cai<sup>1,2</sup>, Jun Li<sup>2</sup>, Wei-Yun
-            Yau<sup>2</sup>, Linna Xie<sup>1</sup>
+            Yau<sup>2</sup>, Lihua Xie<sup>1</sup>
           </p>
           <div class="affiliation-list">
             <p>
@@ -59,58 +58,53 @@
         </div>
       </section>
 
+      <section class="paper-section tldr-section">
+        <div class="tldr-box" aria-label="TL;DR summary">
+          <p class="tldr-label">TL;DR</p>
+          <p>
+            Can we train a single generative model to generate multi-robot trajectories in a feed-forward manner?
+          </p>
+          <p>
+            We propose <strong>Ro</strong>bots as To<strong>ken</strong>s (<strong>Roken</strong>), a unified generative multi-robot planner, capable of single-robot path planning, coordinated multi-robot planning, and conditional planning, by simply changing the input robot tokens.
+          </p>
+        </div>
+      </section>
+
       <figure class="teaser-figure">
-        <img
-          src="assets/fig_framework.gif"
-          alt="Animated overview of the Roken framework"
-        />
+        <div class="teaser-gif-pair">
+          <img
+            src="assets/fig-framework-1.gif"
+            alt="Animated overview of the Roken framework input and tokenization"
+          />
+          <img
+            src="assets/fig-framework-2.gif"
+            alt="Animated overview of the Roken framework trajectory generation"
+          />
+        </div>
         <figcaption>
-          Animated overview of the Roken framework for generating coordinated
-          multi-robot trajectories with robot tokens.
+          The unified Roken model supports three planning modes: single-robot planning, coordinated multi-robot planning, and conditional planning with partially fixed robot tokens.
         </figcaption>
       </figure>
 
       <section id="motivation" class="paper-section">
-        <div class="tldr-box" aria-label="TL;DR summary">
-          <p class="tldr-label">TL;DR</p>
-          <p>
-            Roken treats each robot as a token and uses a single diffusion
-            transformer to generate coordinated multi-robot trajectories.
-          </p>
-          <p>
-            The same model supports different team sizes, preserves safety and
-            connectivity constraints, and transfers from simulation to physical
-            robot navigation.
-          </p>
-        </div>
-
         <h2>Motivation</h2>
         <p>
-          Multi-robot navigation requires a team to reach goals while avoiding
-          obstacles, preventing inter-robot collisions, and maintaining
-          communication connectivity. Classical planners often need carefully
-          designed coordination rules, while learned policies can struggle when
-          the number of robots or the environment layout changes.
+          Robot planning has undergone a paradigm shift from classical optimization to distribution generation. Yet, most existing works propose generative planners for single-robot scenarios, or combine these single-robot planners with iterative post-processing for multi-robot planning.
         </p>
         <p>
-          Roken asks whether coordinated robot motion can be modeled as a
-          generative problem: given goals and a map, produce a set of compatible
-          future trajectories for the whole team in one denoising process.
+          Roken asks whether coordinated multi-robot trajectories, as a special spatiotemporal distribution, can be learned and generated with one generative model in a feed-forward manner.
         </p>
 
         <h3>Challenges</h3>
         <ul class="challenge-list">
           <li>
-            <strong>Coordination:</strong> robots must move toward individual
-            goals without creating collisions or disconnected teams.
+            <strong>Capability:</strong> Can one neural network generate multi-robot trajectories in a feed-forward manner?
           </li>
           <li>
-            <strong>Scalability:</strong> one model should work across changing
-            team sizes instead of being retrained for every robot count.
+            <strong>Scalability:</strong> Can one model support variable numbers of robots without structural changes or additional training?
           </li>
           <li>
-            <strong>Generalization:</strong> generated trajectories should
-            remain reliable in unseen cluttered maps and physical deployments.
+            <strong>Generalizability:</strong> Can the model generalize to new environments and transfer to real-world multi-robot navigation?
           </li>
         </ul>
       </section>
@@ -118,11 +112,8 @@
       <section id="method" class="paper-section">
         <h2>Method Overview</h2>
         <p>
-          Roken is an end-to-end diffusion transformer for multi-robot
-          trajectory generation. Each robot token contains the robot state,
-          noisy future trajectory, goal condition, and generation mask. Robot
-          tokens communicate through transformer self-attention, while map
-          tokens provide occupancy context through cross-attention.
+          We propose Robots as Tokens (Roken), a unified generative model based on a diffusion transformer (DiT) that treats coordinated multi-robot trajectories as a special spatiotemporal distribution, and learns the map-conditioned trajectory distribution from expert data.
+          The key design of Roken is to represent each robot as a robot token, in which robot tokens naturally interact with each other through self-attention, and attend to environment map tokens for spatial awareness.
         </p>
         <figure class="paper-figure">
           <img
@@ -131,16 +122,23 @@
             loading="lazy"
           />
           <figcaption>
-            Roken treats the robot team as a set of interacting tokens and
-            decodes clean coordinated trajectories after denoising.
+            Roken treats robots as a set of interacting robot tokens, and
+            decodes clean coordinated multi-robot trajectories from the final-layer tokens.
           </figcaption>
         </figure>
         <p>
-          The training objective combines trajectory denoising with auxiliary
-          tasks for local occupancy reconstruction and waypoint prediction.
-          These signals make map conditioning more effective and encourage
-          collision-aware, goal-directed team behavior.
+          <strong>Pre-Training with Expert Data:</strong> In pre-training, Roken absorbs expert trajectories with different team sizes as different numbers of robot tokens, with random token masking for conditional trajectory generation. The training objective combines trajectory denoising with auxiliary
+          tasks for local occupancy reconstruction and waypoint prediction, for enhanced condition injection and spatial understanding.
         </p>
+        <p>
+          <strong>Post-Training with Reinforcement Learning:</strong> After pre-training, the policy is further refined through
+          trajectory-level reinforcement learning to enhance its long-term planning capability and safety adherence.
+        </p>
+        <div
+          id="videos-method-overview"
+          class="video-mount"
+          data-video-group="methodOverview"
+        ></div>
       </section>
 
       <section id="results" class="paper-section">
@@ -151,10 +149,9 @@
           inter-robot collision avoidance, and communication connectivity.
         </p>
         <div class="result-subsection">
-          <h3>One Model, Many Robots</h3>
+          <h3>One Model, Many Trajectories</h3>
           <p>
-            The same model supports single-robot planning, coordinated team
-            planning, and conditional generation with fixed robot tokens.
+            One Roken model is able to generate trajectories of multiple robots in a feed-forward manner, with coordinated behavior.
           </p>
           <div
             id="videos-many-robots"
@@ -165,8 +162,7 @@
         <div class="result-subsection">
           <h3>One Model, Variable Teams</h3>
           <p>
-            Mixed-team training improves scalability across team sizes, with
-            evaluation spanning <strong>1 to 10 robots</strong>.
+            Roken demonstrates good scalability due to its scalable design. After training with mixed team sizes, one Roken model can support variable numbers of robots without structural changes or additional training, by simply changing the number of input robot tokens.
           </p>
           <div
             id="videos-variable-teams"
@@ -175,92 +171,182 @@
           ></div>
           <figure class="paper-figure">
             <img
-              src="assets/fig-scalability.png"
+              src="assets/fig_scalability_more.png"
               alt="Scalability evaluation across robot team sizes"
               loading="lazy"
             />
             <figcaption>
-              Scalability evaluation across robot team sizes for different
-              Roken variants.
+              Scalability evaluation across various robot team sizes.
             </figcaption>
           </figure>
         </div>
         <div class="result-subsection">
           <h3>One Model, New Scenarios</h3>
           <p>
-            Roken RL reaches a full success ratio of <strong>0.790</strong>,
-            with <strong>0.920</strong> connectivity and
-            <strong>0.947</strong> reach ratio, and the generated trajectories
-            transfer to physical multi-robot navigation.
+            Roken adapts to new environments with only partially observed maps (although Roken is never trained in such scenarios), demonstrating its strong generalizability and transferability to new scenarios.
           </p>
           <div
             id="videos-new-scenarios"
             class="video-mount"
             data-video-group="newScenarios"
           ></div>
-          <figure class="paper-figure">
-            <img
-              src="assets/fig-realworld2.png"
-              alt="Real-world robot deployment and maze navigation examples"
-              loading="lazy"
-            />
-            <figcaption>
-              Real-world deployment demonstrates that generated coordinated
-              trajectories can transfer to physical multi-robot navigation.
-            </figcaption>
-          </figure>
         </div>
       </section>
 
       <section id="gallery" class="paper-section">
-        <h2>Qualitative Results</h2>
+        <h2>Ablations</h2>
         <p>
-          Additional examples show Roken's rollout behavior, deployment setup,
-          occupancy reconstruction ability, and representative failure cases.
+          Roken outperforms the baseline methods used to generate the expert data, with more efficient and safer trajectories. Trajectory-level reinforcement learning further enhances the long-term planning capability of the model with the highest full-success ratio.
         </p>
-        <div class="figure-stack">
-          <figure class="paper-figure">
-            <img
-              src="assets/fig-wheeltec.png"
-              alt="WheelTec robot deployment results"
-              loading="lazy"
-            />
-            <figcaption>
-              Real-world WheelTec deployment with one to four robots.
-            </figcaption>
-          </figure>
-          <figure class="paper-figure">
-            <img
-              src="assets/fig-more-results.png"
-              alt="Additional rollout episodes for different team sizes"
-              loading="lazy"
-            />
-            <figcaption>
-              Additional rollout episodes with different team sizes.
-            </figcaption>
-          </figure>
-          <figure class="paper-figure">
-            <img
-              src="assets/fig-occ-prediction1.png"
-              alt="Local occupancy reconstruction example one"
-              loading="lazy"
-            />
-            <figcaption>
-              Local occupancy reconstruction from robot-token features.
-            </figcaption>
-          </figure>
-          <figure class="paper-figure">
-            <img
-              src="assets/fig-occ-prediction2.png"
-              alt="Local occupancy reconstruction example two"
-              loading="lazy"
-            />
-            <figcaption>
-              Additional occupancy reconstruction examples at different local
-              scales.
-            </figcaption>
-          </figure>
-        </div>
+        <figure class="table-figure">
+          <figcaption>
+            Evaluation results on unseen environments with four robots.
+          </figcaption>
+          <div class="table-scroll" role="region" aria-label="Evaluation results on unseen environments with four robots">
+            <table class="paper-table">
+              <thead>
+                <tr>
+                  <th scope="col">Model</th>
+                  <th scope="col">L<sub>traj</sub></th>
+                  <th scope="col">L<sub>occ</sub></th>
+                  <th scope="col">L<sub>wp</sub></th>
+                  <th scope="col">L<sub>sdf</sub></th>
+                  <th scope="col">Full<br />success &#8593;</th>
+                  <th scope="col">Obs-<br />Colli. &#8595;</th>
+                  <th scope="col">Inter-<br />Colli. &#8595;</th>
+                  <th scope="col">Connect. &#8593;</th>
+                  <th scope="col">Reach &#8593;</th>
+                  <th scope="col">Length &#8595;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">SGG</th>
+                  <td colspan="4">--</td>
+                  <td>0.479</td>
+                  <td><strong>0.000</strong></td>
+                  <td><span class="second-best">0.028</span></td>
+                  <td>0.505</td>
+                  <td>0.976</td>
+                  <td><strong>0.492</strong></td>
+                </tr>
+                <tr>
+                  <th scope="row">GNN</th>
+                  <td colspan="4">--</td>
+                  <td>0.327</td>
+                  <td>0.329</td>
+                  <td><strong>0.000</strong></td>
+                  <td>0.414</td>
+                  <td><span class="second-best">0.999</span></td>
+                  <td>2.174</td>
+                </tr>
+                <tr>
+                  <th scope="row">Laplacian</th>
+                  <td colspan="4">--</td>
+                  <td>0.741</td>
+                  <td><span class="second-best">0.098</span></td>
+                  <td>0.053</td>
+                  <td><span class="second-best">0.949</span></td>
+                  <td>0.784</td>
+                  <td>1.178</td>
+                </tr>
+                <tr class="table-divider">
+                  <th scope="row">Roken<sub>four</sub></th>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>0.765</td>
+                  <td>0.145</td>
+                  <td>0.081</td>
+                  <td>0.873</td>
+                  <td>0.923</td>
+                  <td>0.623</td>
+                </tr>
+                <tr>
+                  <th scope="row">Roken<sub>mixed</sub></th>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td><span class="second-best">0.779</span></td>
+                  <td>0.112</td>
+                  <td>0.098</td>
+                  <td>0.899</td>
+                  <td>0.915</td>
+                  <td>0.629</td>
+                </tr>
+                <tr>
+                  <th scope="row">Roken<sub>RL</sub></th>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td><strong>0.790</strong></td>
+                  <td>0.127</td>
+                  <td>0.089</td>
+                  <td>0.920</td>
+                  <td>0.947</td>
+                  <td>0.622</td>
+                </tr>
+                <tr class="table-divider">
+                  <th scope="rowgroup" rowspan="4" class="ablation-group">
+                    Roken<sub>four</sub><br />Ablations
+                  </th>
+                  <td>&#10003;</td>
+                  <td>&times;</td>
+                  <td>&times;</td>
+                  <td>&times;</td>
+                  <td>0.262</td>
+                  <td>0.707</td>
+                  <td>0.110</td>
+                  <td><strong>0.997</strong></td>
+                  <td><strong>1.000</strong></td>
+                  <td><span class="second-best">0.523</span></td>
+                </tr>
+                <tr>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&times;</td>
+                  <td>&times;</td>
+                  <td>0.724</td>
+                  <td>0.179</td>
+                  <td>0.088</td>
+                  <td>0.844</td>
+                  <td>0.894</td>
+                  <td>0.631</td>
+                </tr>
+                <tr>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&times;</td>
+                  <td>0.698</td>
+                  <td>0.225</td>
+                  <td>0.101</td>
+                  <td>0.874</td>
+                  <td>0.910</td>
+                  <td>0.619</td>
+                </tr>
+                <tr>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>&#10003;</td>
+                  <td>0.719</td>
+                  <td>0.164</td>
+                  <td>0.122</td>
+                  <td>0.865</td>
+                  <td>0.909</td>
+                  <td>0.628</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">
+            <em>Note:</em> All Roken<sub>four</sub> ablation models are trained for 200 epochs on the same four-robot datasets. All methods are evaluated on 1000 unseen environments with five independent runs, which in total involve 5000 evaluation episodes. Bold: best performance; underline: second-best performance.
+          </p>
+        </figure>
       </section>
 
       <section id="limitations" class="paper-section">
@@ -302,10 +388,9 @@
     </main>
 
     <footer class="site-footer">
-      <span>Roken project page preview.</span>
       <a href="#top">Back to top</a>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=nav-indicator"></script>
   </body>
 </html>
