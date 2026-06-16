@@ -51,8 +51,12 @@
           </div>
         </div>
         <div class="link-row" aria-label="Project links">
-          <span class="button primary disabled" aria-disabled="true"
-            >arXiv coming soon</span
+          <a
+            class="button primary"
+            href="https://arxiv.org/abs/2606.15550"
+            target="_blank"
+            rel="noopener"
+            >arXiv</a
           >
           <span class="button disabled" aria-disabled="true">Code coming soon</span>
         </div>
@@ -112,8 +116,8 @@
       <section id="method" class="paper-section">
         <h2>Method Overview</h2>
         <p>
-          We propose Robots as Tokens (Roken), a unified generative model based on a diffusion transformer (DiT) that treats coordinated multi-robot trajectories as a special spatiotemporal distribution, and learns the map-conditioned trajectory distribution from expert data.
-          The key design of Roken is to represent each robot as a robot token, in which robot tokens naturally interact with each other through self-attention, and attend to environment map tokens for spatial awareness.
+          We propose Robots as Tokens (Roken), a unified generative model based on a diffusion transformer (DiT) that learns spatiotemporal distribution coordinated multi-robot trajectories, and generate multi-robot trajectories in a feed-forward manner.
+          The key design of Roken is to <strong>represent each robot as a robot token</strong>, in which robot tokens naturally interact with each other through self-attention, and attend to environment map tokens for spatial awareness.
         </p>
         <figure class="paper-figure">
           <img
@@ -378,11 +382,14 @@
           </button>
           <span class="copy-status" role="status" aria-live="polite"></span>
         </div>
-        <pre><code id="bibtex-code">@article{roken2026,
-  title={Robots as Tokens: Unified Diffusion Transformer for Coordinated Multi-Robot Trajectory Generation},
-  author={Author list to be added},
-  journal={Project page preview},
-  year={2026}
+        <pre><code id="bibtex-code">@misc{bai_2026_roken,
+  title={Robots as Tokens: Unified Diffusion Transformer for Coordinated Multi-Robot Trajectory Generation}, 
+  author={Ruofei Bai and Jie Chen and Yuxin Cai and Jun Li and Wei-Yun Yau and Lihua Xie},
+  year={2026},
+  eprint={2606.15550},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO},
+  url={https://arxiv.org/abs/2606.15550}, 
 }</code></pre>
       </section>
     </main>
