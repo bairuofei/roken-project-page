@@ -214,6 +214,12 @@ h1 {
   margin-top: 22px;
 }
 
+.acceptance-note {
+  margin: 16px 0 0;
+  color: var(--accent-dark);
+  font-size: 1rem;
+}
+
 .button,
 .copy-button {
   min-height: 40px;
